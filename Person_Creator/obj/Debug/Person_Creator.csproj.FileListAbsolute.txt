@@ -1,0 +1,7 @@
+C:\Programmering\Person_Creator\Person_Creator\bin\Debug\Person_Creator.exe.config
+C:\Programmering\Person_Creator\Person_Creator\bin\Debug\Person_Creator.exe
+C:\Programmering\Person_Creator\Person_Creator\bin\Debug\Person_Creator.pdb
+C:\Programmering\Person_Creator\Person_Creator\obj\Debug\Person_Creator.csprojAssemblyReference.cache
+C:\Programmering\Person_Creator\Person_Creator\obj\Debug\Person_Creator.csproj.CoreCompileInputs.cache
+C:\Programmering\Person_Creator\Person_Creator\obj\Debug\Person_Creator.exe
+C:\Programmering\Person_Creator\Person_Creator\obj\Debug\Person_Creator.pdb
