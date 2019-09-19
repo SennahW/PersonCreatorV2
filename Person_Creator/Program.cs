@@ -7,12 +7,14 @@ using System.IO;
 
 namespace Person_Creator
 {
-    class Program
+    class Program 
     {
         static void Main(string[] args)
         {
             bool tempCorrectInput = false;
             int tempPlayerChoice = 0;
+
+            //Main menu
             while (tempCorrectInput == false)
             {
                 Console.WriteLine("What do you want to do?");
@@ -43,6 +45,9 @@ namespace Person_Creator
             }
         }
 
+        ///<summary>
+        ///Creates a person with user input and saves it a textfile.
+        ///</summary>
         static void CreatePerson()
         {
             string[] countries = new string[1];
@@ -50,34 +55,90 @@ namespace Person_Creator
             string tempLastname;
             int tempBirthdate = 0;
             int tempGender;
-            string tempCountry = "";
+            string tempCountry = null;
             bool tempCorrectInput = false;
             
             Console.WriteLine("Hi there! In this program you can create a person");
-            Console.WriteLine("Start by entering the firstname of your new person");
-            tempFirstname = Console.ReadLine();
-            Console.WriteLine("whats's the lastname?");
-            tempLastname = Console.ReadLine();
-            Console.Clear();
-            while (tempCorrectInput == false)
+
+            //User input and validation for firstname
+            do
             {
-                string tempUserInput = "";
-                Console.WriteLine("When was " + tempFirstname + " " + tempLastname + " born? (YYMMDD)");
-                tempUserInput = Console.ReadLine();
-                if (tempUserInput.Length > 5 && tempUserInput.Length < 7)
+                Console.WriteLine("Start by entering the firstname of your new person");
+                tempCorrectInput = false;
+                tempFirstname = Console.ReadLine();
+                if (tempFirstname.Contains(";") != true)
                 {
-                    int.TryParse(tempUserInput, out tempBirthdate);
                     tempCorrectInput = true;
                 }
-            }
-            Console.WriteLine("What gender is " + tempFirstname + " " + tempLastname + "?");
-            Console.WriteLine("[1] Man");
-            Console.WriteLine("[2] Women");
-            Console.WriteLine("[3] Non-binary");
-            int.TryParse(Console.ReadLine(), out tempGender);
+                else
+                {
+                    Console.WriteLine("Name can't contain a semicolon");
+                }
+            } while (tempCorrectInput == false);
+
+            //User input and validation for lastname
+            do
+            {
+                Console.WriteLine("Whats's the lastname?");
+                tempCorrectInput = false;
+                tempLastname = Console.ReadLine();
+                if (tempLastname.Contains(";") != true)
+                {
+                    tempCorrectInput = true;
+                }
+                else
+                {
+                    Console.WriteLine("Name can't contain a semicolon");
+                }
+            } while (tempCorrectInput == false);
+            Console.Clear();
+
+            //User input and validation for birthdate
+            do
+            {
+                tempCorrectInput = false;
+                
+                Console.WriteLine("When was " + tempFirstname + " " + tempLastname + " born? (YYMMDD)");
+                string tempUserInput = Console.ReadLine();
+                if (tempUserInput.Length > 5 && tempUserInput.Length < 7)
+                {
+                    tempCorrectInput = int.TryParse(tempUserInput, out tempBirthdate);
+                    if (tempCorrectInput == false)
+                    {
+                        Console.WriteLine("Birtdate can only contain numbers");
+                    }
+                }
+            } while (tempCorrectInput == false);
+
+            //User input and validation for gender
+            do
+            {
+                tempCorrectInput = false;
+                Console.WriteLine("What gender is " + tempFirstname + " " + tempLastname + "?");
+                Console.WriteLine("[1] Man");
+                Console.WriteLine("[2] Women");
+                Console.WriteLine("[3] Non-binary");
+                
+                if (int.TryParse(Console.ReadLine(), out tempGender))
+                {
+                    if (tempGender > 0 && tempGender < 4)
+                    {
+                        tempCorrectInput = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Answer needs to be 1-3");
+                        Console.Clear();
+                    }
+                }
+            } while (tempCorrectInput == false);
+
+            //User input and validation for gender
             tempCountry = GetCountry(tempCountry);
+
+            //Find existing paths to warn user of overwriting an already existing file
             string[] filePaths = Directory.GetFiles(Path.GetFullPath("Persons/"), "*.txt");
-            string tempFilePath = null;
+            string tempFilePath = null; 
             for (int i = 0; i < filePaths.Length; i++)
             {
                 if (filePaths[i] == Path.GetFullPath("Persons/" + tempLastname + "_" + tempFirstname + ".txt"))
@@ -86,14 +147,19 @@ namespace Person_Creator
                     Console.WriteLine("WARNING!!! A file already exist");
                     Console.WriteLine("[{0}] Throwaway this person",1);
                     Console.WriteLine("[{0}] Overwrite the old file",2);
-                    int.TryParse(Console.ReadLine(), out tempUserInput);
-                    switch (tempUserInput)
+                    if (int.TryParse(Console.ReadLine(), out tempUserInput))
                     {
-                        case 1:
-                            return;
-                        case 2:
-                            tempFilePath = Path.GetFullPath("Persons/" + tempLastname + "_" + tempFirstname + ".txt");
-                            break;
+                        switch (tempUserInput)
+                        {
+                            case 1:
+                                return;
+                            case 2:
+                                tempFilePath = Path.GetFullPath("Persons/" + tempLastname + "_" + tempFirstname + ".txt");
+                                break;
+                            default:
+                                Console.WriteLine("1 or 2 is valid answer");
+                                break;
+                        }
                     }
                 }
                 else
@@ -111,6 +177,9 @@ namespace Person_Creator
             Console.Clear();
         }
 
+        ///<summary>
+        ///Read a text file made by this program. User can choose which one.
+        ///</summary>
         static void ReadPerson()
         {
             int tempPlayerChoice = 1;
@@ -168,15 +237,22 @@ namespace Person_Creator
             Console.ReadKey();
             Console.Clear();
         }
-        
+
+        ///<summary>
+        ///Creates and writes to new file.
+        ///</summary>
         static void AddText(FileStream aFileStream, string aStringToAdd)
         {
             byte[] tempTextToWrite = new UTF8Encoding(true).GetBytes(aStringToAdd);
             aFileStream.Write(tempTextToWrite, 0, tempTextToWrite.Length);
         }
 
+        ///<summary>
+        ///Returns a string with country. Reads a textfile with countries and checks user input against the list.
+        ///</summary>
         static string GetCountry(string aString)
-        { 
+        {
+            bool tempCorrectInput = false;
             using (FileStream tempFileStream = File.OpenRead(Path.GetFullPath("Countries.txt")))
             {
                 byte[] tempArray = new byte[tempFileStream.Length];
@@ -193,12 +269,25 @@ namespace Person_Creator
                     Console.WriteLine(tempCountries[i]);
                 }
                 Console.WriteLine("What is the first letter of your country");
-                string tempUserInputLetter = Console.ReadLine().ToUpper();
-                if (tempUserInputLetter.Length > 0)
-                {   
-                    tempUserInputLetter.Remove(2);
-                }
-                
+                string tempUserInputLetter;
+                do
+                {
+                    tempUserInputLetter = Console.ReadLine().ToUpper().Substring(0, 1);
+                    //Makes sure that he user can't write a wrong character.
+                    foreach (char c in tempUserInputLetter)
+                    {
+                        if (char.IsLetter(c))
+                        {
+                            tempCorrectInput = true;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Only a letter is a valid input");
+                            tempCorrectInput = false;
+                        }
+                    }
+                } while (tempCorrectInput);
 
                 for (int i = 0; i < tempCountries.Length; i++)
                 {
@@ -212,8 +301,25 @@ namespace Person_Creator
                 {
                     Console.WriteLine("[{0}]" + tempCorrectCountries[i], i);
                 }
+
                 int tempCountryNumber;
-                int.TryParse(Console.ReadLine(), out tempCountryNumber );
+                tempCorrectInput = false;
+                do
+                {
+                    if (int.TryParse(Console.ReadLine(), out tempCountryNumber))
+                    {
+                        if (tempCountryNumber > 0 && tempCountryNumber <= tempCorrectCountries.Count)
+                        {
+                            tempCorrectInput = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Answer needs to be 1-" + tempCorrectCountries.Count);
+                            Console.Clear();
+                        }
+                    }
+                } while (tempCorrectInput == false);
+
                 Console.Clear();
                 return tempCorrectCountries[tempCountryNumber];
             }
