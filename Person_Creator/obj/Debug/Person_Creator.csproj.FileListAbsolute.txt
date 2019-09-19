@@ -12,3 +12,10 @@ C:\Programmering\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.csprojA
 C:\Programmering\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.csproj.CoreCompileInputs.cache
 C:\Programmering\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.exe
 C:\Programmering\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.pdb
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\bin\Debug\Person_Creator.exe.config
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\bin\Debug\Person_Creator.exe
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\bin\Debug\Person_Creator.pdb
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.csprojAssemblyReference.cache
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.csproj.CoreCompileInputs.cache
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.exe
+C:\Users\Johannnes\Documents\GitHub\PersonCreatorV2\Person_Creator\obj\Debug\Person_Creator.pdb

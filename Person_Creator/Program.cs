@@ -39,7 +39,8 @@ namespace Person_Creator
                         break;
 
                     default:
-                        Console.WriteLine("Try entering 1-3");
+                        Console.Clear();
+                        Console.WriteLine("Valid entry is 1-3");
                         break;
                 }
             }
@@ -94,21 +95,7 @@ namespace Person_Creator
             Console.Clear();
 
             //User input and validation for birthdate
-            do
-            {
-                tempCorrectInput = false;
-                
-                Console.WriteLine("When was " + tempFirstname + " " + tempLastname + " born? (YYMMDD)");
-                string tempUserInput = Console.ReadLine();
-                if (tempUserInput.Length > 5 && tempUserInput.Length < 7)
-                {
-                    tempCorrectInput = int.TryParse(tempUserInput, out tempBirthdate);
-                    if (tempCorrectInput == false)
-                    {
-                        Console.WriteLine("Birtdate can only contain numbers");
-                    }
-                }
-            } while (tempCorrectInput == false);
+            tempBirthdate = GetBirthdate(tempFirstname, tempLastname);
 
             //User input and validation for gender
             do
@@ -185,6 +172,13 @@ namespace Person_Creator
             int tempPlayerChoice = 1;
             Console.WriteLine("Select a person file");
             string[] filePaths = Directory.GetFiles(Path.GetFullPath("Persons/"), "*.txt");
+            if (filePaths.Length < 1)
+            {
+                Console.WriteLine("There are no files to be found. ERROR 404");
+                Console.WriteLine("Press a key to continue");
+                Console.ReadKey();
+                return;
+            }
             for (int i = 0; i < filePaths.Length; i++)
             {
                 Console.WriteLine("[" + (i+1) + "] " + filePaths[i]);
@@ -262,17 +256,21 @@ namespace Person_Creator
                 string[] tempCountries = new string[0];
                 while (tempFileStream.Read(tempArray, 0, tempArray.Length) > 0)
                 {
+                    //Splits countries into seperate array entries
                     tempCountries = tempText.GetString(tempArray).Split(',');
                 }
                 for (int i = 0; i < tempCountries.Length; i++)
                 {
                     Console.WriteLine(tempCountries[i]);
                 }
+
+                //Limits selection
                 Console.WriteLine("What is the first letter of your country");
                 string tempUserInputLetter;
                 do
                 {
                     tempUserInputLetter = Console.ReadLine().ToUpper().Substring(0, 1);
+                    
                     //Makes sure that he user can't write a wrong character.
                     foreach (char c in tempUserInputLetter)
                     {
@@ -324,5 +322,50 @@ namespace Person_Creator
                 return tempCorrectCountries[tempCountryNumber];
             }
         }
+        
+        static int GetBirthdate (string anFirstname, string anLastname)
+        {
+            bool tempCorrectInput = false;
+            int tempBirthdate;
+            do
+            {
+                Console.WriteLine("When was " + anFirstname + " " + anLastname + " born? (YYMMDD)");
+                string tempUserInput = Console.ReadLine();
+                if (tempUserInput.Length > 5 && tempUserInput.Length < 7)
+                {
+                    if (int.TryParse(tempUserInput, out tempBirthdate))
+                    {
+                        DateTime tempDT = DateTime.UtcNow.Date;
+                        Console.WriteLine(tempDT.ToString("ddMMyy"));
+
+                        for (int i = 0; i < 12; i++)
+                        {
+                            if (i <= 9)
+                            {
+                                if (tempBirthdate.ToString().Substring(2, 2) == "0" + i)
+                                {
+                                    switch (tempBirthdate)
+                                    {
+                                    }
+                                }
+                                else if (tempBirthdate.ToString().Substring(2, 2) == i.ToString())
+                                {
+                                    switch (tempBirthdate)
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (tempCorrectInput == false)
+                    {
+                        Console.WriteLine("Birtdate can only contain numbers");
+                    }
+                }
+            } while (tempCorrectInput == false);
+            Console.ReadLine();
+            return 1;
+        }
+
     }
 }
