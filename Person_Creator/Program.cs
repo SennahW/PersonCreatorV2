@@ -59,40 +59,10 @@ namespace Person_Creator
             string tempCountry = null;
             bool tempCorrectInput = false;
             
+            //User input and validation for names
             Console.WriteLine("Hi there! In this program you can create a person");
-
-            //User input and validation for firstname
-            do
-            {
-                Console.WriteLine("Start by entering the firstname of your new person");
-                tempCorrectInput = false;
-                tempFirstname = Console.ReadLine();
-                if (tempFirstname.Contains(";") != true)
-                {
-                    tempCorrectInput = true;
-                }
-                else
-                {
-                    Console.WriteLine("Name can't contain a semicolon");
-                }
-            } while (tempCorrectInput == false);
-
-            //User input and validation for lastname
-            do
-            {
-                Console.WriteLine("Whats's the lastname?");
-                tempCorrectInput = false;
-                tempLastname = Console.ReadLine();
-                if (tempLastname.Contains(";") != true)
-                {
-                    tempCorrectInput = true;
-                }
-                else
-                {
-                    Console.WriteLine("Name can't contain a semicolon");
-                }
-            } while (tempCorrectInput == false);
-            Console.Clear();
+            tempFirstname = GetName("What's the first name of the person");
+            tempLastname = GetName("What's the last name of the person");
 
             //User input and validation for birthdate
             tempBirthdate = GetBirthdate(tempFirstname, tempLastname);
@@ -322,47 +292,121 @@ namespace Person_Creator
                 return tempCorrectCountries[tempCountryNumber];
             }
         }
-        
-        static int GetBirthdate (string anFirstname, string anLastname)
+
+        ///<summary>
+        ///Returns a string. Checks that user input is only letters and makes it a string
+        ///</summary>
+        static string GetName(string aString)
         {
-            bool tempCorrectInput = false;
-            int tempBirthdate;
+            bool tempCorrectInput;
+            //User input and validation for firstname
             do
             {
-                Console.WriteLine("When was " + anFirstname + " " + anLastname + " born? (YYMMDD)");
-                string tempUserInput = Console.ReadLine();
-                if (tempUserInput.Length > 5 && tempUserInput.Length < 7)
+                Console.WriteLine(aString);
+                tempCorrectInput = false;
+                string tempName = Console.ReadLine();
+                //Makes sure that he user can't write a wrong character.
+                foreach (char tempChar in tempName)
                 {
-                    if (int.TryParse(tempUserInput, out tempBirthdate))
+                    if (char.IsLetter(tempChar))
                     {
-                        DateTime tempDT = DateTime.UtcNow.Date;
-                        Console.WriteLine(tempDT.ToString("ddMMyy"));
-
-                        for (int i = 0; i < 12; i++)
-                        {
-                            if (i <= 9)
-                            {
-                                if (tempBirthdate.ToString().Substring(2, 2) == "0" + i)
-                                {
-                                    switch (tempBirthdate)
-                                    {
-                                    }
-                                }
-                                else if (tempBirthdate.ToString().Substring(2, 2) == i.ToString())
-                                {
-                                    switch (tempBirthdate)
-                                    {
-                                    }
-                                }
-                            }
-                        }
+                        tempCorrectInput = true;
+                        return tempName;
                     }
-                    if (tempCorrectInput == false)
+                    else
                     {
-                        Console.WriteLine("Birtdate can only contain numbers");
+                        tempCorrectInput = false;
+                        Console.WriteLine("Only letters can be found in the name");
                     }
                 }
             } while (tempCorrectInput == false);
+            return null;
+        }
+
+        ///<summary>
+        ///Returns an int. Get's userinput and then returns a valid birthdate
+        ///</summary>
+        static int GetBirthdate (string aFirstname, string aLastname)
+        {
+            bool tempCorrectBirthdate = false;
+            do
+            {
+                string tempYear;
+                bool tempCorrectYear = false;
+                do
+                {
+                    Console.WriteLine("What year was " + aFirstname + " " + aLastname + " born? (YYYY)");
+                    tempYear = Console.ReadLine();
+                    if (tempYear.Length < 5 && tempYear.Length > 3)
+                    {
+                        foreach (char tempChar in tempYear)
+                        {
+                            if (char.IsNumber(tempChar))
+                            {
+                                tempCorrectYear = true;
+                            }
+                            else
+                            {
+                                tempCorrectYear = false;
+                                Console.WriteLine("Only numbers can be found in the year");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("A four long number is valid input");
+                    }
+                } while (tempCorrectYear == false);
+
+                string tempMonth;
+                bool tempCorrectMonth = false;
+                do
+                {
+                    Console.WriteLine("What month was " + aFirstname + " " + aLastname + " born? (MM)");
+                    tempMonth = Console.ReadLine();
+                    if (tempMonth.Length < 3 && tempMonth.Length > 2)
+                    {
+                        foreach (char tempChar in tempMonth)
+                        {
+                            if (char.IsNumber(tempChar))
+                            {
+                                tempCorrectMonth = true;
+                            }
+                            else
+                            {
+                                tempCorrectMonth = false;
+                                Console.WriteLine("Only numbers can be found in the month");
+                            }
+                        }
+                    }
+                } while (tempCorrectMonth == false);
+
+                string tempDay;
+                bool tempCorrectDay = false;
+                do
+                {
+                    Console.WriteLine("What day was " + aFirstname + " " + aLastname + " born? (DD)");
+                    tempDay = Console.ReadLine();
+                    if (tempDay.Length < 0 && tempDay.Length > 31)
+                    {
+                        foreach (char tempChar in tempDay)
+                        {
+                            if (char.IsNumber(tempChar))
+                            {
+                                tempCorrectDay = true;
+                            }
+                            else
+                            {
+                                tempCorrectDay = false;
+                                Console.WriteLine("Only numbers can be found in the month");
+                            }
+                        }
+                    }
+                } while (tempCorrectDay == false);
+
+                string tempCheckBirthday = tempYear + tempMonth + tempDay;
+
+            } while (tempCorrectBirthdate == false);
             Console.ReadLine();
             return 1;
         }
