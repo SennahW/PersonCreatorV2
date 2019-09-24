@@ -362,9 +362,10 @@ namespace Person_Creator
                 bool tempCorrectMonth = false;
                 do
                 {
+                    Console.Clear();
                     Console.WriteLine("What month was " + aFirstname + " " + aLastname + " born? (MM)");
                     tempMonth = Console.ReadLine();
-                    if (tempMonth.Length < 3 && tempMonth.Length > 2)
+                    if (tempMonth.Length < 3 && tempMonth.Length > 1)
                     {
                         foreach (char tempChar in tempMonth)
                         {
@@ -385,9 +386,10 @@ namespace Person_Creator
                 bool tempCorrectDay = false;
                 do
                 {
+                    Console.Clear();
                     Console.WriteLine("What day was " + aFirstname + " " + aLastname + " born? (DD)");
                     tempDay = Console.ReadLine();
-                    if (tempDay.Length < 0 && tempDay.Length > 31)
+                    if (tempDay.Length < 3 && tempDay.Length > 1)
                     {
                         foreach (char tempChar in tempDay)
                         {
@@ -404,10 +406,22 @@ namespace Person_Creator
                     }
                 } while (tempCorrectDay == false);
 
-                string tempCheckBirthday = tempYear + tempMonth + tempDay;
+                //Checks so that the month and day that the user inputed is correct
+                string tempBirthdate = tempMonth + "-" + tempDay + "-" + tempYear + " 00:00:00.0";
+                if (DateTime.TryParse(tempBirthdate, out DateTime temp) && int.TryParse(tempBirthdate, out int temp2))
+                    tempCorrectBirthdate = true;
 
+                //Checks so that the year is correct
+                if (!(int.Parse(tempYear) < DateTime.Now.Year))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Invalid BirthDate");
+                }
+                else
+                {
+                    tempCorrectBirthdate = true;
+                }
             } while (tempCorrectBirthdate == false);
-            Console.ReadLine();
             return 1;
         }
 
