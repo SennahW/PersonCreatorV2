@@ -328,6 +328,7 @@ namespace Person_Creator
         ///</summary>
         static int GetBirthdate (string aFirstname, string aLastname)
         {
+            int tempYearInt = 0;
             bool tempCorrectBirthdate = false;
             do
             {
@@ -343,6 +344,7 @@ namespace Person_Creator
                         {
                             if (char.IsNumber(tempChar))
                             {
+                                int.TryParse(tempYear, out tempYearInt);
                                 tempCorrectYear = true;
                             }
                             else
@@ -407,23 +409,24 @@ namespace Person_Creator
                 } while (tempCorrectDay == false);
 
                 //Checks so that the month and day that the user inputed is correct
-                string tempBirthdate = tempMonth + "-" + tempDay + "-" + tempYear + " 00:00:00.0";
+                string tempBirthdate = tempYear + "-" + tempMonth + "-" + tempDay + " 00:00:00.0";
                 if (DateTime.TryParse(tempBirthdate, out DateTime temp) && int.TryParse(tempBirthdate, out int temp2))
-                    tempCorrectBirthdate = true;
-
-                //Checks so that the year is correct
-                if (!(int.Parse(tempYear) < DateTime.Now.Year))
                 {
-                    Console.Clear();
-                    Console.WriteLine("Invalid BirthDate");
+                    tempCorrectBirthdate = true;
                 }
-                else
+                Console.WriteLine(DateTime.Now);
+
+                if (tempYearInt > DateTime.Now.Year)
                 {
-                    tempCorrectBirthdate = true;
+                    tempCorrectBirthdate = false;
+                }
+
+                if (tempCorrectBirthdate == false)
+                {
+                    Console.WriteLine("Invalid BirthDate");
                 }
             } while (tempCorrectBirthdate == false);
             return 1;
         }
-
     }
 }
