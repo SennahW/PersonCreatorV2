@@ -109,6 +109,7 @@ namespace Person_Creator
                         switch (tempUserInput)
                         {
                             case 1:
+                                Console.Clear();
                                 return;
                             case 2:
                                 tempFilePath = Path.GetFullPath("Persons/" + tempLastname + "_" + tempFirstname + ".txt");
@@ -368,7 +369,6 @@ namespace Person_Creator
                 bool tempCorrectMonth = false;
                 do
                 {
-                    Console.Clear();
                     Console.WriteLine("What month was " + aFirstname + " " + aLastname + " born? (MM)");
                     tempMonth = Console.ReadLine();
                     if (tempMonth.Length < 3 && tempMonth.Length > 1)
@@ -386,6 +386,10 @@ namespace Person_Creator
                                 Console.WriteLine("Only numbers can be found in the month");
                             }
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Only 01-12");
                     }
                 } while (tempCorrectMonth == false);
 
