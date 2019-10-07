@@ -109,6 +109,7 @@ namespace Person_Creator
                         switch (tempUserInput)
                         {
                             case 1:
+                                Console.Clear();
                                 return;
                             case 2:
                                 tempFilePath = Path.GetFullPath("Persons/" + tempLastname + "_" + tempFirstname + ".txt");
@@ -236,18 +237,18 @@ namespace Person_Creator
 
                 //Limits selection
                 Console.WriteLine("What is the first letter of your country");
-                string tempUserInputLetter;
-                do
+                string tempUserInputLetter = null;
+                tempCorrectInput = false;
+                while (tempCorrectInput == false)
                 {
                     tempUserInputLetter = Console.ReadLine().ToUpper().Substring(0, 1);
-                    
+
                     //Makes sure that he user can't write a wrong character.
                     foreach (char c in tempUserInputLetter)
                     {
                         if (char.IsLetter(c))
                         {
                             tempCorrectInput = true;
-                            break;
                         }
                         else
                         {
@@ -255,7 +256,7 @@ namespace Person_Creator
                             tempCorrectInput = false;
                         }
                     }
-                } while (tempCorrectInput);
+                }
 
                 for (int i = 0; i < tempCountries.Length; i++)
                 {
@@ -264,19 +265,20 @@ namespace Person_Creator
                         tempCorrectCountries.Add(tempCountries[i]);
                     }
                 }
-                Console.WriteLine("What's your country?");
-                for (int i = 0; i < tempCorrectCountries.Count; i++)
-                {
-                    Console.WriteLine("[{0}]" + tempCorrectCountries[i], i);
-                }
 
                 int tempCountryNumber;
                 tempCorrectInput = false;
                 do
                 {
+
+                    Console.WriteLine("What's your country?");
+                    for (int i = 0; i < tempCorrectCountries.Count; i++)
+                    {
+                        Console.WriteLine("[{0}]" + tempCorrectCountries[i], i);
+                    }
                     if (int.TryParse(Console.ReadLine(), out tempCountryNumber))
                     {
-                        if (tempCountryNumber > 0 && tempCountryNumber <= tempCorrectCountries.Count)
+                        if (tempCountryNumber >= 0 && tempCountryNumber <= tempCorrectCountries.Count)
                         {
                             tempCorrectInput = true;
                         }
@@ -311,6 +313,7 @@ namespace Person_Creator
                     if (char.IsLetter(tempChar))
                     {
                         tempCorrectInput = true;
+                        Console.Clear();
                         return tempName;
                     }
                     else
@@ -329,6 +332,7 @@ namespace Person_Creator
         static int GetBirthdate (string aFirstname, string aLastname)
         {
             int tempYearInt = 0;
+            int tempYearReturn = 0;
             bool tempCorrectBirthdate = false;
             do
             {
@@ -346,6 +350,7 @@ namespace Person_Creator
                             {
                                 int.TryParse(tempYear, out tempYearInt);
                                 tempCorrectYear = true;
+                                Console.Clear();
                             }
                             else
                             {
@@ -364,7 +369,6 @@ namespace Person_Creator
                 bool tempCorrectMonth = false;
                 do
                 {
-                    Console.Clear();
                     Console.WriteLine("What month was " + aFirstname + " " + aLastname + " born? (MM)");
                     tempMonth = Console.ReadLine();
                     if (tempMonth.Length < 3 && tempMonth.Length > 1)
@@ -374,6 +378,7 @@ namespace Person_Creator
                             if (char.IsNumber(tempChar))
                             {
                                 tempCorrectMonth = true;
+                                Console.Clear();
                             }
                             else
                             {
@@ -381,6 +386,10 @@ namespace Person_Creator
                                 Console.WriteLine("Only numbers can be found in the month");
                             }
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Only 01-12");
                     }
                 } while (tempCorrectMonth == false);
 
@@ -398,6 +407,7 @@ namespace Person_Creator
                             if (char.IsNumber(tempChar))
                             {
                                 tempCorrectDay = true;
+                                Console.Clear();
                             }
                             else
                             {
@@ -410,11 +420,12 @@ namespace Person_Creator
 
                 //Checks so that the month and day that the user inputed is correct
                 string tempBirthdate = tempYear + "-" + tempMonth + "-" + tempDay + " 00:00:00.0";
-                if (DateTime.TryParse(tempBirthdate, out DateTime temp) && int.TryParse(tempBirthdate, out int temp2))
+                string tempBirthDateint = tempYear + tempMonth + tempDay;
+                if (DateTime.TryParse(tempBirthdate, out DateTime temp) && int.TryParse(tempBirthDateint, out int temp2))
                 {
                     tempCorrectBirthdate = true;
+                    Int32.TryParse(tempYear + tempMonth + tempDay, out tempYearReturn);
                 }
-                Console.WriteLine(DateTime.Now);
 
                 if (tempYearInt > DateTime.Now.Year)
                 {
@@ -423,10 +434,11 @@ namespace Person_Creator
 
                 if (tempCorrectBirthdate == false)
                 {
+                    Console.Clear();
                     Console.WriteLine("Invalid BirthDate");
                 }
             } while (tempCorrectBirthdate == false);
-            return 1;
+            return tempYearReturn;
         }
     }
 }
